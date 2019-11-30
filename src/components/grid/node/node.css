@@ -1,0 +1,26 @@
+.node {
+	width: 10px;
+	height: 10px;
+	outline: 0.5px solid #393e46;
+	display: inline-block;
+}
+
+.wall {
+	background-color: aquamarine;
+}
+
+.node-empty {
+	background-color: none;
+}
+
+.node-target {
+	background-color: #71c9ce;
+}
+
+.node-start {
+	background-color: #e3fdfd;
+}
+
+.node-visited {
+	background-color: #a6e3e9;
+}
