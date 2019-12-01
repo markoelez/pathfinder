@@ -3,7 +3,16 @@ import './node.css'
 
 class Node extends React.Component {
 	render() {
-		const { row, col, isStart, isTarget, isWall } = this.props
+		const {
+			row,
+			col,
+			isStart,
+			isTarget,
+			isWall,
+			onMouseDown,
+			onMouseEnter,
+			onMouseUp
+		} = this.props
 		const type = isWall
 			? 'wall'
 			: isStart
@@ -11,7 +20,15 @@ class Node extends React.Component {
 			: isTarget
 			? 'node-target'
 			: 'node-empty'
-		return <div id={`node-${row}-${col}`} className={`node ${type}`}></div>
+		return (
+			<div
+				id={`node-${row}-${col}`}
+				className={`node ${type}`}
+				onMouseDown={() => onMouseDown(row, col)}
+				onMouseEnter={() => onMouseEnter(row, col)}
+				onMouseUp={() => onMouseUp()}
+			></div>
+		)
 	}
 }
 

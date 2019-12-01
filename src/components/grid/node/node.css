@@ -1,12 +1,12 @@
 .node {
-	width: 10px;
-	height: 10px;
+	width: 20px;
+	height: 20px;
 	outline: 0.5px solid #393e46;
 	display: inline-block;
 }
 
 .wall {
-	background-color: aquamarine;
+	background-color: rgb(15, 185, 252);
 }
 
 .node-empty {
@@ -14,13 +14,17 @@
 }
 
 .node-target {
-	background-color: #71c9ce;
+	background-color: #f02424;
 }
 
 .node-start {
-	background-color: #e3fdfd;
+	background-color: #51ff00;
 }
 
 .node-visited {
-	background-color: #a6e3e9;
+	background-color: #f7fac8;
+}
+
+.node-shortest-path {
+	background-color: #0059ff;
 }
