@@ -1,13 +1,13 @@
 import React from 'react'
 import Node from './node/node'
-import { Button } from '@material-ui/core'
+import { Button, Slider } from '@material-ui/core'
 import { dfs, bfs, getShortestPath } from '../../algorithms/bfs'
 import './grid.css'
 
 export const TOTAL_ROWS = 27
 export const TOTAL_COLS = 70
 
-const SPEED_MULTIPLIER = 10
+const SPEED_MULTIPLIER = 5
 const PATH_SPEED_MULTIPLIER = 40
 
 class Grid extends React.Component {
@@ -20,7 +20,8 @@ class Grid extends React.Component {
 			target: [target_row, target_col],
 			grid: [],
 			mouseIsPressed: false,
-			algorithm: bfs
+			algorithm: bfs,
+			speed: 8
 		}
 	}
 
@@ -68,6 +69,7 @@ class Grid extends React.Component {
 	}
 
 	animateBFS(nodes, shortestOrder) {
+		// const { speed } = this.state
 		for (let i = 0; i <= nodes.length; ++i) {
 			if (i === nodes.length) {
 				setTimeout(() => {
@@ -107,6 +109,16 @@ class Grid extends React.Component {
 		this.animateBFS(visited, shortestOrder)
 	}
 
+	valuetext(value) {
+		return `${value}`
+	}
+
+	onSliderChange(value) {
+		console.log('test')
+		console.log(value)
+		this.setState({ speed: value })
+	}
+
 	render() {
 		const { grid } = this.state
 		return (
@@ -125,6 +137,7 @@ class Grid extends React.Component {
 				>
 					start
 				</Button>
+
 				<div className='grid'>
 					{grid.map((row, rowIdx) => {
 						return (
