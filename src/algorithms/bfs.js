@@ -24,7 +24,6 @@ export function bfs(grid, startNode, targetNode) {
 				if (nr == targetNode.row && nc == targetNode.col) return visitedNodes
 				grid[nr][nc].isVisited = true
 				grid[nr][nc].previousNode = grid[node.row][node.col]
-				console.log(grid[nr][nc])
 				visitedNodes.push(grid[nr][nc])
 				queue.push(grid[nr][nc])
 			}
@@ -37,7 +36,8 @@ export function getShortestPath(target) {
 	const order = []
 	let current = target
 	while (current !== null) {
-		console.log('bsf')
+		console.log('tree')
+		console.log(current.previousNode)
 		order.unshift(current)
 		current = current.previousNode
 	}

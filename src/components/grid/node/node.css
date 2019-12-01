@@ -6,7 +6,7 @@
 }
 
 .wall {
-	background-color: rgb(15, 185, 252);
+	background-color: #0fb9fc;
 }
 
 .node-empty {
@@ -26,5 +26,5 @@
 }
 
 .node-shortest-path {
-	background-color: #0059ff;
+	background-color: #ffa600;
 }

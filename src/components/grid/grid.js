@@ -30,31 +30,18 @@ class Grid extends React.Component {
 	}
 
 	handleMouseDown(row, col) {
-		const newGrid = this.toggleWall(this.state.grid, row, col)
+		const newGrid = toggleWall(this.state.grid, row, col)
 		this.setState({ grid: newGrid, mouseIsPressed: true })
 	}
 
 	handleMouseEnter(row, col) {
 		if (!this.state.mouseIsPressed) return
-		const newGrid = this.toggleWall(this.state.grid, row, col)
+		const newGrid = toggleWall(this.state.grid, row, col)
 		this.setState({ grid: newGrid })
 	}
 
 	handleMouseUp() {
 		this.setState({ mouseIsPressed: false })
-	}
-
-	getMaze() {
-		// const { start, target } = this.state
-		// const grid = getWalledGrid()
-		// const startNode = grid[start[0]][start[1]]
-		// const targetNode = grid[target[0]][target[1]]
-		// const visited = bfs(grid, startNode, targetNode)
-		// for (let i = 0; i < visited.length; ++i) {
-		// 	const node = visited[i]
-		// 	document.getElementById(`node-${node.row}-${node.col}`).className =
-		// 		'node node-empty'
-		// }
 	}
 
 	resetGrid() {
@@ -65,15 +52,7 @@ class Grid extends React.Component {
 			}
 		}
 
-		var start_row = Math.floor(Math.random() * (TOTAL_ROWS + 1))
-		var start_col = Math.floor(Math.random() * (TOTAL_COLS + 1))
-		var target_row = Math.floor(Math.random() * (TOTAL_ROWS + 1))
-		var target_col = Math.floor(Math.random() * (TOTAL_COLS + 1))
-
-		while (start_row == target_row && start_col == target_col) {
-			target_row = Math.floor(Math.random() * (TOTAL_ROWS + 1))
-			target_col = Math.floor(Math.random() * (TOTAL_COLS + 1))
-		}
+		const { start_row, start_col, target_row, target_col } = getNewEndpoints()
 
 		document.getElementById(`node-${start_row}-${start_col}`).className =
 			'node node-start'
@@ -85,12 +64,6 @@ class Grid extends React.Component {
 			start: [start_row, start_col],
 			target: [target_row, target_col]
 		})
-	}
-
-	toggleWall(grid, row, col) {
-		const newGrid = grid.slice()
-		newGrid[row][col].isWall = true
-		return newGrid
 	}
 
 	animateBFS(nodes, shortestOrder) {
@@ -116,7 +89,7 @@ class Grid extends React.Component {
 				const node = shortestOrder[i]
 				document.getElementById(`node-${node.row}-${node.col}`).className =
 					'node node-shortest-path'
-			}, SPEED_MULTIPLIER * i)
+			}, 15 * i)
 		}
 	}
 
@@ -125,7 +98,7 @@ class Grid extends React.Component {
 		const startNode = grid[start[0]][start[1]]
 		const targetNode = grid[target[0]][target[1]]
 		const visited = bfs(grid, startNode, targetNode)
-		const shortestOrder = getShortestPath(targetNode)
+		const shortestOrder = getShortestPath(visited[visited.length - 1])
 		this.animateBFS(visited, shortestOrder)
 	}
 
@@ -146,13 +119,6 @@ class Grid extends React.Component {
 					onClick={() => this.resetGrid()}
 				>
 					Clear
-				</Button>
-				<Button
-					variant='contained'
-					color='secondary'
-					onClick={() => this.getMaze()}
-				>
-					Get Maze
 				</Button>
 				<div className='grid'>
 					{grid.map((row, rowIdx) => {
@@ -205,24 +171,24 @@ const genInitialGrid = (start, target) => {
 	return grid
 }
 
+const getNewEndpoints = () => {
+	let start_row = Math.floor(Math.random() * TOTAL_ROWS)
+	let start_col = Math.floor(Math.random() * TOTAL_COLS)
+	let target_row = Math.floor(Math.random() * TOTAL_ROWS)
+	let target_col = Math.floor(Math.random() * TOTAL_COLS)
+	while (start_row == target_row && start_col == target_col) {
+		target_row = Math.floor(Math.random() * TOTAL_ROWS)
+		target_col = Math.floor(Math.random() * TOTAL_COLS)
+	}
+	return { start_row, start_col, target_row, target_col }
+}
+
 const getNewGrid = () => {
 	const grid = []
 	for (let i = 0; i < TOTAL_ROWS; ++i) {
 		const row = []
 		for (let j = 0; j < TOTAL_COLS; ++j) {
 			row.push(getEmptyNode(i, j))
-		}
-		grid.push(row)
-	}
-	return grid
-}
-
-const getWalledGrid = () => {
-	const grid = []
-	for (let i = 0; i < TOTAL_ROWS; ++i) {
-		const row = []
-		for (let j = 0; j < TOTAL_COLS; ++j) {
-			row.push(getWallNode(i, j))
 		}
 		grid.push(row)
 	}
@@ -241,18 +207,6 @@ const getEmptyNode = (row, col) => {
 	}
 }
 
-const getWallNode = (row, col) => {
-	return {
-		row,
-		col,
-		isStart: false,
-		isTarget: false,
-		isVisited: false,
-		isWall: true,
-		previousNode: null
-	}
-}
-
 const createNode = (row, col, start, target) => {
 	return {
 		row,
@@ -263,6 +217,17 @@ const createNode = (row, col, start, target) => {
 		isWall: false,
 		previousNode: null
 	}
+}
+
+const toggleWall = (grid, row, col) => {
+	const newGrid = grid.slice()
+	const node = newGrid[row][col]
+	const newNode = {
+		...node,
+		isWall: true
+	}
+	newGrid[row][col] = newNode
+	return newGrid
 }
 
 export default Grid
