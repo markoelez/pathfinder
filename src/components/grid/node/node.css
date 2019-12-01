@@ -23,7 +23,7 @@
 
 .node-visited {
 	animation-name: visitedAnimation;
-	animation-duration: 1.5s;
+	animation-duration: 0.5s;
 	animation-timing-function: ease-out;
 	animation-delay: 0;
 	animation-direction: alternate;
@@ -34,7 +34,7 @@
 
 @keyframes visitedAnimation {
 	0% {
-		transform: scale(0.3);
+		transform: scale(0.4);
 		background-color: #f95959;
 		border-radius: 100%;
 	}
@@ -50,5 +50,29 @@
 }
 
 .node-shortest-path {
-	background-color: #ffa600;
+	animation-name: pathAnimation;
+	animation-duration: 1s;
+	animation-timing-function: ease-out;
+	animation-delay: 0;
+	animation-direction: alternate;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+	animation-play-state: running;
+}
+
+@keyframes pathAnimation {
+	0% {
+		transform: scale(0.3);
+		background-color: #2fe7ff;
+		border-radius: 100%;
+	}
+
+	50% {
+		background-color: #05ffc99a;
+	}
+
+	100% {
+		transform: scale(1);
+		background-color: #14e0be;
+	}
 }

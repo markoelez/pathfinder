@@ -2,25 +2,24 @@ import React from 'react'
 import Node from './node/node'
 import './grid.css'
 import { Button, IconButton } from '@material-ui/core'
-import { bfs, getShortestPath } from '../../algorithms/bfs'
+import { dfs, bfs, getShortestPath } from '../../algorithms/bfs'
 
 export const TOTAL_ROWS = 27
 export const TOTAL_COLS = 70
 
-const SPEED_MULTIPLIER = 2
+const SPEED_MULTIPLIER = 3
 
 class Grid extends React.Component {
 	constructor() {
 		super()
-		let START_ROW = Math.floor(Math.random() * (TOTAL_ROWS + 1))
-		let START_COL = Math.floor(Math.random() * (TOTAL_COLS + 1))
-		let TARGET_ROW = Math.floor(Math.random() * (TOTAL_ROWS + 1))
-		let TARGET_COL = Math.floor(Math.random() * (TOTAL_COLS + 1))
+		const { start_row, start_col, target_row, target_col } = getNewEndpoints()
+
 		this.state = {
-			start: [START_ROW, START_COL],
-			target: [TARGET_ROW, TARGET_COL],
+			start: [start_row, start_col],
+			target: [target_row, target_col],
 			grid: [],
-			mouseIsPressed: false
+			mouseIsPressed: false,
+			algorithm: bfs
 		}
 	}
 	componentDidMount() {
@@ -94,10 +93,10 @@ class Grid extends React.Component {
 	}
 
 	visualize() {
-		const { grid, start, target } = this.state
+		const { grid, start, target, algorithm } = this.state
 		const startNode = grid[start[0]][start[1]]
 		const targetNode = grid[target[0]][target[1]]
-		const visited = bfs(grid, startNode, targetNode)
+		const visited = algorithm(grid, startNode, targetNode)
 		const shortestOrder = getShortestPath(visited[visited.length - 1])
 		this.animateBFS(visited, shortestOrder)
 	}
@@ -108,17 +107,17 @@ class Grid extends React.Component {
 			<div>
 				<Button
 					variant='contained'
-					color='primary'
-					onClick={() => this.visualize()}
-				>
-					Visualize
-				</Button>
-				<Button
-					variant='contained'
 					color='secondary'
 					onClick={() => this.resetGrid()}
 				>
-					Clear
+					reset
+				</Button>
+				<Button
+					variant='contained'
+					color='primary'
+					onClick={() => this.visualize()}
+				>
+					start
 				</Button>
 				<div className='grid'>
 					{grid.map((row, rowIdx) => {
