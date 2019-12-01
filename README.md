@@ -12,5 +12,5 @@ View at <https://markoelez.github.io/pathfinder>
 
 ## ToDo
 
-- [ ] Maze generation
-- [ ] Djikstra, A\*, etc.
+- Maze generation
+- Djikstra, A\*, etc.
