@@ -75,6 +75,9 @@ class Grid extends React.Component {
 				}, SPEED_MULTIPLIER * i)
 				return
 			}
+			if (i == nodes.length - 1) {
+				continue
+			}
 			const node = nodes[i]
 			console.log('test')
 			setTimeout(() => {
@@ -86,6 +89,7 @@ class Grid extends React.Component {
 
 	animateShortestPath(shortestOrder) {
 		for (let i = 0; i < shortestOrder.length; i++) {
+			if (i == 0 || i == shortestOrder.length - 1) continue
 			setTimeout(() => {
 				const node = shortestOrder[i]
 				document.getElementById(`node-${node.row}-${node.col}`).className =
