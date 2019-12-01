@@ -1,13 +1,14 @@
 import React from 'react'
 import Node from './node/node'
-import './grid.css'
-import { Button, IconButton } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import { dfs, bfs, getShortestPath } from '../../algorithms/bfs'
+import './grid.css'
 
 export const TOTAL_ROWS = 27
 export const TOTAL_COLS = 70
 
-const SPEED_MULTIPLIER = 3
+const SPEED_MULTIPLIER = 10
+const PATH_SPEED_MULTIPLIER = 40
 
 class Grid extends React.Component {
 	constructor() {
@@ -22,6 +23,7 @@ class Grid extends React.Component {
 			algorithm: bfs
 		}
 	}
+
 	componentDidMount() {
 		const { start, target } = this.state
 		const grid = genInitialGrid(start, target)
@@ -88,7 +90,7 @@ class Grid extends React.Component {
 				const node = shortestOrder[i]
 				document.getElementById(`node-${node.row}-${node.col}`).className =
 					'node node-shortest-path'
-			}, 15 * i)
+			}, PATH_SPEED_MULTIPLIER * i)
 		}
 	}
 
