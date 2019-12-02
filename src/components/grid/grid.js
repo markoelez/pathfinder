@@ -20,8 +20,7 @@ class Grid extends React.Component {
 			target: [target_row, target_col],
 			grid: [],
 			mouseIsPressed: false,
-			algorithm: bfs,
-			speed: 8
+			algorithm: bfs
 		}
 	}
 
@@ -69,7 +68,6 @@ class Grid extends React.Component {
 	}
 
 	animateBFS(nodes, shortestOrder) {
-		// const { speed } = this.state
 		for (let i = 0; i <= nodes.length; ++i) {
 			if (i === nodes.length) {
 				setTimeout(() => {
@@ -109,14 +107,21 @@ class Grid extends React.Component {
 		this.animateBFS(visited, shortestOrder)
 	}
 
-	valuetext(value) {
-		return `${value}`
-	}
+	generateMaze() {
+		const grid = genMaze()
 
-	onSliderChange(value) {
-		console.log('test')
-		console.log(value)
-		this.setState({ speed: value })
+		const { start_row, start_col, target_row, target_col } = getNewEndpoints()
+
+		document.getElementById(`node-${start_row}-${start_col}`).className =
+			'node node-start'
+		document.getElementById(`node-${target_row}-${target_col}`).className =
+			'node node-target'
+
+		this.setState({
+			grid: grid,
+			start: [start_row, start_col],
+			target: [target_row, target_col]
+		})
 	}
 
 	render() {
@@ -137,7 +142,13 @@ class Grid extends React.Component {
 				>
 					start
 				</Button>
-
+				<Button
+					variant='contained'
+					color='primary'
+					onClick={() => this.generateMaze()}
+				>
+					generate maze
+				</Button>
 				<div className='grid'>
 					{grid.map((row, rowIdx) => {
 						return (
@@ -213,6 +224,18 @@ const getNewGrid = () => {
 	return grid
 }
 
+const genMaze = () => {
+	const grid = getNewGrid()
+	for (let i = 0; i < TOTAL_ROWS; ++i) {
+		for (let j = 0; j < TOTAL_COLS; ++j) {
+			if (probability(0.2)) {
+				toggleWall(grid, i, j)
+			}
+		}
+	}
+	return grid
+}
+
 const getEmptyNode = (row, col) => {
 	return {
 		row,
@@ -223,6 +246,10 @@ const getEmptyNode = (row, col) => {
 		isWall: false,
 		previousNode: null
 	}
+}
+
+var probability = function(n) {
+	return !!n && Math.random() <= n
 }
 
 const createNode = (row, col, start, target) => {
