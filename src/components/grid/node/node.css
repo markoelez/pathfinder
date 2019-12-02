@@ -14,7 +14,7 @@
 
 .wall {
 	animation-name: wallAnimation;
-	animation-duration: 0.5s;
+	animation-duration: 0.2s;
 	animation-timing-function: ease-out;
 	animation-delay: 0;
 	animation-direction: alternate;

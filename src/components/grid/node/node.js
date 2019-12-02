@@ -21,13 +21,13 @@ class Node extends React.Component {
 			? 'node-target'
 			: 'node-empty'
 		return (
-			<div
+			<td
 				id={`node-${row}-${col}`}
 				className={`node ${type}`}
 				onMouseDown={() => onMouseDown(row, col)}
 				onMouseEnter={() => onMouseEnter(row, col)}
 				onMouseUp={() => onMouseUp()}
-			></div>
+			></td>
 		)
 	}
 }

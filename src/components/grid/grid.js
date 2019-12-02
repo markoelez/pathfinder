@@ -1,11 +1,11 @@
 import React from 'react'
 import Node from './node/node'
-import { Button, Slider } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import { dfs, bfs, getShortestPath } from '../../algorithms/bfs'
 import './grid.css'
 
-export const TOTAL_ROWS = 27
-export const TOTAL_COLS = 70
+export const TOTAL_ROWS = 30
+export const TOTAL_COLS = 60
 
 const SPEED_MULTIPLIER = 5
 const PATH_SPEED_MULTIPLIER = 40
@@ -137,13 +137,21 @@ class Grid extends React.Component {
 	render() {
 		const { grid } = this.state
 		return (
-			<div>
+			<div className='container'>
 				<Button
 					variant='contained'
 					color='secondary'
 					onClick={() => this.resetGrid()}
 				>
 					reset
+				</Button>
+
+				<Button
+					variant='contained'
+					color='secondary'
+					onClick={() => this.generateMaze()}
+				>
+					generate maze
 				</Button>
 				<Button
 					variant='contained'
@@ -152,17 +160,10 @@ class Grid extends React.Component {
 				>
 					start
 				</Button>
-				<Button
-					variant='contained'
-					color='primary'
-					onClick={() => this.generateMaze()}
-				>
-					generate maze
-				</Button>
-				<div className='grid'>
+				<table id='board' className='grid'>
 					{grid.map((row, rowIdx) => {
 						return (
-							<div key={rowIdx}>
+							<tr key={rowIdx}>
 								{row.map((node, nodeIdx) => {
 									const {
 										row,
@@ -189,10 +190,10 @@ class Grid extends React.Component {
 										></Node>
 									)
 								})}
-							</div>
+							</tr>
 						)
 					})}
-				</div>
+				</table>
 			</div>
 		)
 	}
@@ -211,13 +212,13 @@ const genInitialGrid = (start, target) => {
 }
 
 const getNewEndpoints = () => {
-	var start_row = Math.floor(Math.random() * TOTAL_ROWS)
-	var start_col = Math.floor(Math.random() * TOTAL_COLS)
-	var target_row = Math.floor(Math.random() * TOTAL_ROWS)
-	var target_col = Math.floor(Math.random() * TOTAL_COLS)
+	var start_row = getRandomInt(1, TOTAL_ROWS - 2)
+	var start_col = getRandomInt(1, TOTAL_COLS - 2)
+	var target_row = getRandomInt(1, TOTAL_ROWS - 2)
+	var target_col = getRandomInt(1, TOTAL_COLS - 2)
 	while (start_row == target_row && start_col == target_col) {
-		target_row = Math.floor(Math.random() * TOTAL_ROWS)
-		target_col = Math.floor(Math.random() * TOTAL_COLS)
+		target_row = getRandomInt(1, TOTAL_ROWS - 2)
+		target_col = getRandomInt(1, TOTAL_COLS - 2)
 	}
 	return { start_row, start_col, target_row, target_col }
 }
@@ -243,6 +244,14 @@ const genMaze = () => {
 				toggleWall(grid, i, j)
 			}
 		}
+	}
+	for (let i = 0; i < TOTAL_ROWS; ++i) {
+		toggleWall(grid, i, 0)
+		toggleWall(grid, i, TOTAL_COLS - 1)
+	}
+	for (let j = 0; j < TOTAL_COLS; ++j) {
+		toggleWall(grid, 0, j)
+		toggleWall(grid, TOTAL_ROWS - 1, j)
 	}
 	return grid
 }
@@ -284,6 +293,12 @@ const toggleWall = (grid, row, col) => {
 	}
 	newGrid[row][col] = newNode
 	return newGrid
+}
+
+function getRandomInt(min, max) {
+	min = Math.ceil(min)
+	max = Math.floor(max)
+	return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 export default Grid
