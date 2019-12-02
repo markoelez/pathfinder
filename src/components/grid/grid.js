@@ -110,17 +110,21 @@ class Grid extends React.Component {
 	generateMaze() {
 		const grid = genMaze()
 
-		const { start_row, start_col, target_row, target_col } = getNewEndpoints()
+		const { start, target } = this.state
 
-		document.getElementById(`node-${start_row}-${start_col}`).className =
+		grid[start[0]][start[1]].isWall = false
+		grid[start[0]][start[1]].isStart = true
+
+		grid[target[0]][target[1]].isWall = false
+		grid[target[0]][target[1]].isTarget = true
+
+		document.getElementById(`node-${start[0]}-${start[1]}`).className =
 			'node node-start'
-		document.getElementById(`node-${target_row}-${target_col}`).className =
+		document.getElementById(`node-${target[0]}-${target[1]}`).className =
 			'node node-target'
 
 		this.setState({
-			grid: grid,
-			start: [start_row, start_col],
-			target: [target_row, target_col]
+			grid: grid
 		})
 	}
 
