@@ -205,10 +205,10 @@ const genInitialGrid = (start, target) => {
 }
 
 const getNewEndpoints = () => {
-	let start_row = Math.floor(Math.random() * TOTAL_ROWS)
-	let start_col = Math.floor(Math.random() * TOTAL_COLS)
-	let target_row = Math.floor(Math.random() * TOTAL_ROWS)
-	let target_col = Math.floor(Math.random() * TOTAL_COLS)
+	var start_row = Math.floor(Math.random() * TOTAL_ROWS)
+	var start_col = Math.floor(Math.random() * TOTAL_COLS)
+	var target_row = Math.floor(Math.random() * TOTAL_ROWS)
+	var target_col = Math.floor(Math.random() * TOTAL_COLS)
 	while (start_row == target_row && start_col == target_col) {
 		target_row = Math.floor(Math.random() * TOTAL_ROWS)
 		target_col = Math.floor(Math.random() * TOTAL_COLS)
