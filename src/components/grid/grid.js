@@ -31,12 +31,24 @@ class Grid extends React.Component {
 	}
 
 	handleMouseDown(row, col) {
+		const { start, target } = this.state
+		if (
+			(row == start[0] && col == start[1]) ||
+			(row == target[0] && col == target[1])
+		)
+			return
 		const newGrid = toggleWall(this.state.grid, row, col)
 		this.setState({ grid: newGrid, mouseIsPressed: true })
 	}
 
 	handleMouseEnter(row, col) {
 		if (!this.state.mouseIsPressed) return
+		const { start, target } = this.state
+		if (
+			(row == start[0] && col == start[1]) ||
+			(row == target[0] && col == target[1])
+		)
+			return
 		const newGrid = toggleWall(this.state.grid, row, col)
 		this.setState({ grid: newGrid })
 	}
