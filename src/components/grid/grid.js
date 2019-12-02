@@ -273,7 +273,7 @@ const toggleWall = (grid, row, col) => {
 	const node = newGrid[row][col]
 	const newNode = {
 		...node,
-		isWall: !node.isWall
+		isWall: true
 	}
 	newGrid[row][col] = newNode
 	return newGrid
