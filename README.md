@@ -9,8 +9,9 @@ View at <https://markoelez.github.io/pathfinder>
 - Barrier placement
 - BFS pathfinding (shortest path)
 - DFS pathfinding
+- Random maze generation
 
 ## ToDo
 
-- Maze generation
+- Recursive divide maze generation
 - Djikstra, A\*, etc.

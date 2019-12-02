@@ -59,12 +59,6 @@ class Grid extends React.Component {
 
 	resetGrid() {
 		const grid = getNewGrid()
-		for (let i = 0; i < grid.length; ++i) {
-			for (let j = 0; j < grid[0].length; ++j) {
-				document.getElementById(`node-${i}-${j}`).className = 'node node-empty'
-			}
-		}
-
 		const { start_row, start_col, target_row, target_col } = getNewEndpoints()
 
 		document.getElementById(`node-${start_row}-${start_col}`).className =
@@ -234,6 +228,7 @@ const getNewGrid = () => {
 		const row = []
 		for (let j = 0; j < TOTAL_COLS; ++j) {
 			row.push(getEmptyNode(i, j))
+			document.getElementById(`node-${i}-${j}`).className = 'node node-empty'
 		}
 		grid.push(row)
 	}
