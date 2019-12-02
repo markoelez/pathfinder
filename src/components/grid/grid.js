@@ -3,7 +3,7 @@ import Node from './node/node'
 import { Button } from '@material-ui/core'
 import { dfs, bfs, getShortestPath } from '../../algorithms/bfs'
 import './grid.css'
-import { genRandomMaze, genRecursizeMaze } from '../../algorithms/maze_gen'
+import { genRandomMaze, genRecursiveMaze } from '../../algorithms/maze_gen'
 
 export const TOTAL_ROWS = 30
 export const TOTAL_COLS = 60
@@ -112,7 +112,7 @@ class Grid extends React.Component {
 	generateMaze(algorithm) {
 		const { start, target } = this.state
 
-		const grid = algorithm(start, target)
+		const grid = getMaze(start, target, algorithm)
 
 		this.setState({
 			grid: grid
@@ -136,14 +136,14 @@ class Grid extends React.Component {
 				<Button
 					variant='contained'
 					color='secondary'
-					onClick={() => this.generateMaze(randomMaze)}
+					onClick={() => this.generateMaze(genRandomMaze)}
 				>
 					generate random maze
 				</Button>
 				<Button
 					variant='contained'
 					color='secondary'
-					onClick={() => this.generateMaze(recursiveMaze)}
+					onClick={() => this.generateMaze(genRecursiveMaze)}
 				>
 					generate recursive maze
 				</Button>
@@ -223,9 +223,13 @@ const getNewGrid = (start, target) => {
 		const row = []
 		for (let j = 0; j < TOTAL_COLS; ++j) {
 			row.push(getEmptyNode(i, j))
-			if (i != start[0] && j != start[1] && i != target[0] && j != target[1]) {
-				document.getElementById(`node-${i}-${j}`).className = 'node node-empty'
+			if (
+				(i == start[0] && j == start[1]) ||
+				(i == target[0] && j == target[1])
+			) {
+				continue
 			}
+			document.getElementById(`node-${i}-${j}`).className = 'node node-empty'
 		}
 		grid.push(row)
 	}
@@ -235,45 +239,30 @@ const getNewGrid = (start, target) => {
 	return grid
 }
 
-const randomMaze = (start, target) => {
+const getMaze = (start, target, algorithm) => {
 	const grid = getNewGrid(start, target)
-	const walls = genRandomMaze(TOTAL_ROWS, TOTAL_COLS, start, target)
+	const walls = algorithm(TOTAL_ROWS, TOTAL_COLS, start, target)
 	for (let i = 0; i < TOTAL_ROWS; ++i) {
 		for (let j = 0; j < TOTAL_COLS; ++j) {
+			if (
+				(i == start[0] && j == start[1]) ||
+				(i == target[0] && j == target[1])
+			) {
+				continue
+			}
 			if (walls[i][j]) {
-				toggleWall(grid, i, j)
+				toggleWall(grid, i, j, start, target)
 			}
 		}
 	}
-	for (let i = 0; i < TOTAL_ROWS; ++i) {
-		toggleWall(grid, i, 0)
-		toggleWall(grid, i, TOTAL_COLS - 1)
-	}
-	for (let j = 0; j < TOTAL_COLS; ++j) {
-		toggleWall(grid, 0, j)
-		toggleWall(grid, TOTAL_ROWS - 1, j)
-	}
-	return grid
-}
-
-const recursiveMaze = (start, target) => {
-	const grid = getNewGrid()
-	const walls = genRecursizeMaze(TOTAL_ROWS, TOTAL_COLS, start, target)
-	for (let i = 0; i < TOTAL_ROWS; ++i) {
-		for (let j = 0; j < TOTAL_COLS; ++j) {
-			if (walls[i][j]) {
-				toggleWall(grid, i, j)
-			}
-		}
-	}
-	for (let i = 0; i < TOTAL_ROWS; ++i) {
-		toggleWall(grid, i, 0)
-		toggleWall(grid, i, TOTAL_COLS - 1)
-	}
-	for (let j = 0; j < TOTAL_COLS; ++j) {
-		toggleWall(grid, 0, j)
-		toggleWall(grid, TOTAL_ROWS - 1, j)
-	}
+	// for (let i = 0; i < TOTAL_ROWS; ++i) {
+	// 	toggleWall(grid, i, 0)
+	// 	toggleWall(grid, i, TOTAL_COLS - 1)
+	// }
+	// for (let j = 0; j < TOTAL_COLS; ++j) {
+	// 	toggleWall(grid, 0, j)
+	// 	toggleWall(grid, TOTAL_ROWS - 1, j)
+	// }
 	return grid
 }
 
